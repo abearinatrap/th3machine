@@ -175,6 +175,7 @@ export default ({
                 console.log("lost")
             }else if(this.objects[i][j][2]==0){
                 //if objects[i][j]==0, bfs for more 0
+                this.objects[i][j][0]=1
                 this.bfs_z(i,j);
                 console.log("bfs")
             }
@@ -183,10 +184,18 @@ export default ({
             if(i<0 || i>=this.boardHeight) return;
             if(j<0 || j>=this.boardWidth) return;
             console.log(i+" "+j)
-            if(this.objects[i][j][2]==0 && this.objects[i][j][0]!=-1){
+            //this.objects[i-1][j][0]=-1;
+            if(this.objects[i][j][0]!=-1){
                 this.objects[i][j][0]=-1;
+                if(this.objects[i][j][2]!=0) return; 
                 this.bfs_z(i-1,j)
+                this.bfs_z(i-1,j-1)
+                this.bfs_z(i-1,j+1)
+
                 this.bfs_z(i+1,j)
+                this.bfs_z(i+1,j-1)
+                this.bfs_z(i+1,j+1)
+
                 this.bfs_z(i,j-1)
                 this.bfs_z(i,j+1)
             }
