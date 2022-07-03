@@ -13,10 +13,15 @@
                 -->
                 <table v-bind:style="tableStyle">
                     <tr v-for="objRow in objects" :key="objRow">
-                        <td v-for="obj in objRow" :key="obj" v-bind:style="{ color: obj[2]==-1?'red':'black'}" @click="obj[0]=-1;checkBoard(obj[3],obj[4])" @click.right="flags+=obj[1];obj[1]*=-1">
+                        <td v-for="obj in objRow" :key="obj" style="background-color: {{backgroundColor(obj[0])}};" @click="obj[0]=-1;checkBoard(obj[3],obj[4])" @click.right="if(obj[0]!=-1){flags+=obj[1];obj[1]*=-1}">
                             <div v-if="!gameEnd">
                                 <div v-if="obj[0]==-1">
-                                    {{obj[2]}}
+                                    <div v-if="obj[2]!=0" >
+                                        <p style="color:{{numToColor(obj[2])}};">{{obj[2]}}</p>
+                                    </div>
+                                    
+                                </div>
+                                <div v-else class="shadow-lg">
                                 </div>
                                 <img v-if="obj[1]==-1" src="../assets/flag.png"/>
                             </div>
@@ -199,6 +204,42 @@ export default ({
                 this.bfs_z(i,j-1)
                 this.bfs_z(i,j+1)
             }
+        },
+        numToColor: function(num){
+            var out = "#ffffff"
+            switch(num){
+                case 1:
+                    out = "#0000ff"
+                    break;
+                case 2:
+                    out = "#038103"
+                    break;
+                case 3:
+                    out = "#ff0000"
+                    break;
+                case 4:
+                    out = "#000080" 
+                    break;
+                case 5: 
+                    out = "#800000"
+                    break;
+                case 6:
+                    out = "#5b9e9e"
+                    break;
+                case 8:
+                    out = "#808080"
+                    break;
+                default:
+                    out = "#ffffff"
+                    break;
+            }   
+            return out;
+        },
+        backgroundColor: function(num){
+            if(num==-1){
+                return "#C0C0C0";
+            }
+            return "#a3a3a3"
         }
     },
     created(){
@@ -251,6 +292,7 @@ export default ({
     td {
         height: 30px;
         width: 30px;
+        color:black;
         background-color: #C0C0C0;
         border: 1.5px solid;
         border-top-color: #ffffff;
